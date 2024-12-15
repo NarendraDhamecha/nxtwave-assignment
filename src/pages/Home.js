@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import "../css/Home.css";
 import List from "../components/List";
@@ -21,12 +21,35 @@ const Home = () => {
         { id: 2, title: "test title", subTitle: "test subtitle" },
       ],
     },
+    {
+      id: 3,
+      isSelected: false,
+      listItems: [
+        { id: 1, title: "test title", subTitle: "test subtitle" },
+        { id: 2, title: "test title", subTitle: "test subtitle" },
+      ],
+    },
+    {
+      id: 4,
+      isSelected: false,
+      listItems: [
+        { id: 1, title: "test title", subTitle: "test subtitle" },
+        { id: 2, title: "test title", subTitle: "test subtitle" },
+      ],
+    },
   ]);
   const [isCreateNewList, setIsCreateNewList] = useState(false);
   const [selectedList, setSelectedList] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSelectList = (id) => {
+  const handleSelectList = (event, id) => {
+    const checked = event.target.checked;
+
+    if (checked && selectedList.length === 2) {
+      setErrorMsg("*You can select only 2 lists");
+      return;
+    }
+
     const selectedListIdx = list.findIndex((ele) => ele?.id === id);
 
     if (selectedListIdx > -1) {
@@ -65,9 +88,6 @@ const Home = () => {
       });
     } else {
       setErrorMsg("*You should create exactly 2 lists to create a new list");
-      setTimeout(() => {
-        setErrorMsg("");
-      }, 3000);
     }
   };
 
@@ -78,6 +98,14 @@ const Home = () => {
   };
 
   const handleUpdate = () => {};
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setErrorMsg("");
+    }, 3000);
+
+    return () => clearTimeout(timerId);
+  }, [errorMsg]);
 
   return (
     <div className="home-container">

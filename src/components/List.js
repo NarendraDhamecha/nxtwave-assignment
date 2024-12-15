@@ -15,7 +15,7 @@ const List = ({
         <input
           type="checkbox"
           checked={isSelected}
-          onChange={() => handleSelectList(listNo)}
+          onChange={(event) => handleSelectList(event, listNo)}
         />
         <span>List {idx + 1}</span>
       </div>
